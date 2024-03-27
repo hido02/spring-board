@@ -10,4 +10,6 @@ import com.example.demo.dto.BoardDto;
 @Mapper
 public interface iBoardDao {
 	public List<BoardDto> list();
+	
+	List<BoardDto> findAll();
 }

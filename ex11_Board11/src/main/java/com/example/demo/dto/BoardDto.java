@@ -1,5 +1,7 @@
 package com.example.demo.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.Date;
 
 import lombok.Data;
@@ -16,12 +18,23 @@ import lombok.Data;
 //@Data: lombok 연결
 @Data
 public class BoardDto {
-    private int board_idx; 
-    private String board_name; 
-    private String board_title;
-    private String board_content;
-    private Date board_date;
-    private int board_hit;
+	  @JsonProperty("id")
+	    private int board_idx;
+
+	    @JsonProperty("name")
+	    private String board_name;
+
+	    @JsonProperty("title")
+	    private String board_title;
+
+	    @JsonProperty("content")
+	    private String board_content;
+
+	    @JsonProperty("date")
+	    private Date board_date;
+
+	    @JsonProperty("hits")
+	    private int board_hit;
 	
 	public BoardDto() {
 		

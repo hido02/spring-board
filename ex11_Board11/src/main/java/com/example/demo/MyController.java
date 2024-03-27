@@ -15,12 +15,12 @@ import org.slf4j.LoggerFactory;
 
 @Controller
 public class MyController {
-	
+
 	@Autowired
 	iBoardDao boardDao;
-	
+
 	private static final Logger logger = LoggerFactory.getLogger(MyController.class);
-	
+
 	@RequestMapping("/")
 //	@ResponseBody
 	public String root() {
@@ -28,13 +28,9 @@ public class MyController {
 		System.out.println("listForm으로 리다이렉트됨");
 		return "redirect:listForm";
 	}
-	
+
 	@RequestMapping("/listForm")
 	public String listForm(Model model) {
-		List<BoardDto> list = boardDao.list();
-		model.addAttribute("list", list);
-		System.out.println("여기");
-		System.out.println(list);
 		return "listForm"; // "listForm.jsp" 디스패치해줌
 	}
 }
