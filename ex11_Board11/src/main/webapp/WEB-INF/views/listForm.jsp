@@ -23,35 +23,47 @@ td, h2 {
 </style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
-var ajaxRequest = null;
+function run_ajax(url, type, data, _async, successCallback, errorCallback) {
+    // dataType 및 contentType 속성명 수정, JSON.stringify 오타 수정
+    $.ajax({
+        url: url,
+ //       data: JSON.stringify(data), // 데이터를 JSON 문자열로 변환
+        dataType: 'json', // 서버로부터 받아올 데이터의 타입
+        type: type,
+        async: _async,
+        contentType: 'application/json; charset=UTF-8', // contentType 속성명 수정
+        traditional: true,
+        success: function(data) {
+            successCallback(data);
+        },
+        error: function(request, status, error) {
+            console.log("url1="+url);
+            errorCallback(request, status, error);
+        }
+    });
+}
 
 $(document).ready(function() {
     sendAjaxRequestForBoardList();
 });
 
 function sendAjaxRequestForBoardList() {
-    // 중복 실행 방지
-    if (ajaxRequest !== null) {
-        ajaxRequest.abort();
-    }
-
-    ajaxRequest = $.ajax({
-        url: '/board/list',
-        type: 'GET',
-        dataType: 'json',
-        success: function(data) {
-            var html = '';
-            $.each(data, function(index, item) {
-                html += '<tr>' +
-                        '<td>' + item.board_idx + '</td>' +
-                        '<td>' + item.name + '</td>' +
-                        '<td>' + item.title + '</td>' +
-                        '<td>' + item.date + '</td>' +
-                        '<td>' + item.board_hit + '</td>' +
-                        '</tr>';
-            });
-            $('table > tbody').append(html);
-        }
+    run_ajax('/board/list', 'GET', {}, true, function(data) {
+        // 성공 콜백에서의 데이터 처리
+        var html = '';
+        $.each(data, function(index, item) {
+            html += '<tr>' +
+                    '<td>' + item.board_idx + '</td>' +
+                    '<td>' + item.name + '</td>' +
+                    '<td>' + item.title + '</td>' +
+                    '<td>' + item.date + '</td>' +
+                    '<td>' + item.board_hit + '</td>' +
+                    '</tr>';
+        });
+        $('table > tbody').append(html);
+    }, function(request, status, error) {
+        // 오류 처리 콜백
+        console.error("AJAX Error: ", status, error);
     });
 }
 </script>
