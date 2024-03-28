@@ -8,10 +8,34 @@
 <!DOCTYPE html>
 <html>
 <head>
+<meta charset="UTF-8">
+<title>게시판 목록보기</title>
+<style>
+* {
+	margin: 0 auto;
+	padding: 0 auto;
+	overflow: hidden;
+}
+
+td, h2 {
+	text-align: center;
+}
+</style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
+var ajaxRequest = null;
+
 $(document).ready(function() {
-    $.ajax({
+    sendAjaxRequestForBoardList();
+});
+
+function sendAjaxRequestForBoardList() {
+    // 중복 실행 방지
+    if (ajaxRequest !== null) {
+        ajaxRequest.abort();
+    }
+
+    ajaxRequest = $.ajax({
         url: '/board/list',
         type: 'GET',
         dataType: 'json',
@@ -29,38 +53,25 @@ $(document).ready(function() {
             $('table > tbody').append(html);
         }
     });
-});
+}
 </script>
-
-<meta charset="UTF-8">
-<title>게시판 목록보기</title>
-<style>
-* {
-	margin: 0 auto;
-	padding: 0 auto;
-	overflow: hidden;
-}
-
-td, h2 {
-	text-align: center;
-}
-</style>
 </head>
 <body>
 	<h2>게시판 글목록</h2>
 
 	<table width="500" cellpadding="0" cellspacing="0" border="1">
-    <tr>
-        <th>번호</th>
-        <th>이름</th>
-        <th>제목</th>
-        <th>날짜</th>
-        <th>조회수</th>
-    </tr>
-    <tbody>
-        <!-- AJAX를 통해 여기에 데이터가 동적으로 추가됩니다 -->
-    </tbody>
-</table>
-
+		<tr>
+			<th>번호</th>
+			<th>이름</th>
+			<th>제목</th>
+			<th>날짜</th>
+			<th>조회수</th>
+		</tr>
+        <!-- AJAX로 불러온 데이터가 여기에 추가됩니다 -->
+		
+		<tr>
+			<td colspan="5"><a href="writeForm">글작성</a></td>
+		</tr>
+	</table>
 </body>
 </html>
